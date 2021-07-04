@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-04-17T13:38:18.232Z</updated>
+  <updated>2021-07-04T03:07:39.101Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/2021/07/04/ROS-package/"/>
+    <id>http://example.com/2021/07/04/ROS-package/</id>
+    <published>2021-07-04T03:09:50.841Z</published>
+    <updated>2021-07-04T03:07:39.101Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="ROS-package"><a href="#ROS-package" class="headerlink" title="ROS-package"></a>ROS-package</h2><h5 id="package文件结构"><a href="#package文件结构" class="headerlink" title="package文件结构"></a>package文件结构</h5><pre class="mermaid">graph TD;package-->CMakeLists.txtpackage-->package.xmlpackage-->scriptsscripts-->.shscripts-->.pypackage-->includeinclude-->.hpackage-->srcsrc-->.cpppackage-->msgmsg-->.msgpackage-->srvsrv-->.srvpackage-->launchlaunch-->.launch</pre><blockquote><p>CMakeLists.txt 编译的指导文件</p><p>package.xml 功能包的背景信息</p><p>scripts 脚本文件</p><p>include c++头文件</p><p>src c++文件</p><p>msg 自定义消息类型</p><p>srv 自定义消息类型</p><p>launch launch文件</p></blockquote><h5 id="package常用指令"><a href="#package常用指令" class="headerlink" title="package常用指令"></a>package常用指令</h5><p><code>rospack</code></p><blockquote><p><code>rospack find &lt;package_name&gt; </code>查找特定package的地址</p><p><code> rospack list</code>列出本地所有package</p></blockquote><p><code>roscd</code></p><blockquote><p><code>roscd &lt;package_name&gt;</code> 跳转到某个特定package的路径</p></blockquote><p><code>rosls</code></p><blockquote><p><code>rosls &lt;package_name&gt;</code> 列举某个package的文件信息</p></blockquote><p><code>rosed</code></p><blockquote><p><code>rosed &lt;package_name&gt; &lt;file_name&gt;</code> 编辑package里的文件</p></blockquote><p><code>catkin_create_pkg</code></p><blockquote><p><code>catkin_create_pkg [deps]</code> 创建一个package</p></blockquote><p><code>rosdep</code></p><blockquote><p><code>rosdep install [package_name]</code> 安装某个package所需的依赖</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;ROS-package&quot;&gt;&lt;a href=&quot;#ROS-package&quot; class=&quot;headerlink&quot; title=&quot;ROS-package&quot;&gt;&lt;/a&gt;ROS-package&lt;/h2&gt;&lt;h5 id=&quot;package文件结构&quot;&gt;&lt;a href=&quot;#packag</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title></title>
