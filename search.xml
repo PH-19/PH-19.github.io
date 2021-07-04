@@ -216,7 +216,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title></title>
+    <title>ROS-package.md</title>
     <url>/2021/07/04/ROS-package/</url>
     <content><![CDATA[<h2 id="ROS-package"><a href="#ROS-package" class="headerlink" title="ROS-package"></a>ROS-package</h2><h5 id="package文件结构"><a href="#package文件结构" class="headerlink" title="package文件结构"></a>package文件结构</h5><pre class="mermaid">graph TD;
 package-->CMakeLists.txt
@@ -271,11 +271,6 @@ launch-->.launch</pre>
 <p><code>rosdep install [package_name]</code> 安装某个package所需的依赖</p>
 </blockquote>
 ]]></content>
-  </entry>
-  <entry>
-    <title>ROS-package.md</title>
-    <url>/2021/07/04/ROS-package-md/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>交叉熵损失函数.md</title>
