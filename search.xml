@@ -118,7 +118,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title>交叉熵损失函数.md</title>
+    <title>交叉熵损失函数</title>
     <url>/2021/04/18/%E4%BA%A4%E5%8F%89%E7%86%B5%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h1 id="交叉熵损失函数"><a href="#交叉熵损失函数" class="headerlink" title="交叉熵损失函数"></a>交叉熵损失函数</h1><h3 id="一、损失函数"><a href="#一、损失函数" class="headerlink" title="一、损失函数"></a>一、损失函数</h3><p><strong>在一个训练循环(training loop)内会发生:</strong></p>
 <p>(1) 抽取训练样本 x 和对应目标 y 组成的数据批量。<br>(2) 在 x 上运行网络[这一步叫作前向传播(forward pass)],得到预测值 y_prediction 。<br>(3) 计算网络在这批数据上的损失,用于衡量 y_prediction 和 y 之间的距离。<br>(4) 计算损失相对于网络参数的梯度[一次反向传播(backward pass)]。<br>(5) 将参数沿着梯度的反方向移动一点,比如 W -= step * gradient ,从而使这批数据上的损失减小一点。        </p>
@@ -233,7 +233,7 @@ end</pre>
 ]]></content>
   </entry>
   <entry>
-    <title>ROS-package.md</title>
+    <title>ROS-package</title>
     <url>/2021/07/04/ROS-package/</url>
     <content><![CDATA[<h2 id="ROS-package"><a href="#ROS-package" class="headerlink" title="ROS-package"></a>ROS-package</h2><h5 id="package文件结构"><a href="#package文件结构" class="headerlink" title="package文件结构"></a>package文件结构</h5><pre class="mermaid">graph TD;
 package-->CMakeLists.txt
