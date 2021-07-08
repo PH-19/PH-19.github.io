@@ -254,85 +254,60 @@
 <blockquote>
 <p><strong>6.1PID参数调试</strong></p>
 <blockquote>
-<pre><code>    pixhawk采用串级PID的方式，外环是控制角度，内环是控制角速度。因为内环更直接作用于电机，所以我们调试pixhawk的PID时，**一般只用调试内环的PID即可(角速度)**。
-
-    **注意！！！**  一切PID参数的调试都是基于电调行程校准通过，桨和电机、电调匹配的基础之上。如果飞机飞起来就侧翻（没校准好传感器和电调），或者已解锁就起飞（桨和电机不匹配），**出现这类飞机都飞不起来的问题，调试PID参数是没有意义的，切记！ 调试PID参数是基于飞机飞行的有点不稳，但是基本可以飞行的基础之上！**
-
-    ***
-
-    &gt; **6.1.1** 试飞行之后将飞控与计算机连接。
-    &gt;
-    &gt; **6.1.2** 打开**QGroundControl**,点击上方文档图标。
-    &gt;
-    &gt; **6.1.3** 打开 ***Analyze*** 下的`Download`选项，点击右侧的`Refresh`选项。
-    &gt;
-    &gt; **6.1.4** 选择需要的飞行日志并点击右侧`Download`选项并完成下载。
-    &gt;
-    &gt; **6.1.5** 打开[Flight Review](https://logs.px4.io/)页面，点击`Choose File...`，选择对应文件，然后`Upload`。
-    &gt;
-    &gt; **6.1.6** 点击弹出页的`Open Analysis`。
-    &gt;
-    &gt; **6.1.7** 根据图表调整参数，具体方式如下。
-
-    ***
-
-    **参数名称对照**
-
-    1.**俯仰**的内环角速度PID参数。
-
-    &gt; `MC_PITCHRATE_P`	`MC_PITCHRATE_I`	`MC_PITCHRATE_D`
-
-    2.**滚转**的内环角速度PID参数。
-
-    &gt; `MC_ROLLRATE_P`	`MC_ROLLRATE_I`	`MC_ROLLRATE_D`
-
-    3.**偏航**的内环角速度PID参数。
-
-    &gt; `MC_YAWRATE_P`	`MC_YAWRATE_I`	`MC_YAWRATE_D`
-
-    ***
-
-    **参数调整**
-
-    ***!!如果飞行器结构对称，那么ROLL与PITCH的概念应该等价，如果不对称，则应该分开讨论。 !!***
-
-    Step 1.**稳定俯仰和翻滚速率**
-
-    &gt; (1)P增益调节	参数：MC_ROLLRATE_P, MC_PITCHRATE_P 
-    &gt;
-    &gt;      中油门上下，到刚好平衡重力。向俯仰或翻滚方向上稍做倾斜，观察反应。飞行器应该温和的抵抗倾斜过程，但保持倾斜角之后不会尝试恢复水平姿态。如果出现震荡，降低P。如果反应正确但非常慢，调大P直到开始出现抖动。重新调回P到稍稍有一点抖动甚至不再抖动（大概回调百分之十），到稍稍超调，典型值一般为0.1。 
-    &gt;
-    &gt; (2)D增益调节	参数：MC_ROLLRATE_D, MC_PITCHRATE_D 
-    &gt;
-    &gt;      如果参数处于某一值时，飞行器稍微抖动并且P值已经适量的减少。从0.01开始缓慢增加RATE_D直到消除最后一点震荡。如果此时飞行器又一次出现抖动，那就是D值过大。一般通过调节P与D就可以得到比较良好的电机响应。RATE_D的典型值一般在0.01–0.02 。
-    &gt;
-    &gt; (3)I增益调节	参数：MC_ROLLRATE_I, MC_PITCHRATE_I
-    &gt;
-    &gt;      如果飞行器可以实现定点但是定点的位置与期望存在误差，那么增加MC_ROLLRATE_I 和MC_PITCHRATE_I以增益MC_ROLLRATE_P的值得百分之五到百分之十开始向上增加。
-
-    Step 2.**稳定翻滚与俯仰角度**
-
-    &gt; P增益调节	参数 MC_ROLL_P, MC_PITCH_P 
-    &gt;   中油门上下，到刚好平衡重力。向俯仰或翻滚方向上稍做倾斜，观察反应。飞行器应该缓慢回到水平。如果出现抖动，减小P。如果反应正确但非常慢，调大P直到开始出现抖动。最佳的反应应该是超调10%–20%后得到良好的响应。 
-    &gt;   在QGoundControl可以锁定pitch与roll。姿态角度超调不要超过10%–20%。
-
-    Step 3.**稳定航向速率**
-
-    &gt; P增益调节	参数：MC_YAWRATE_P 
-    &gt;
-    &gt;      中油门上下，到刚好平衡重力。转动飞行器方向轴，观察反应。电机声音应该发生改变，飞行器应该阻碍方向变化。但是这个响应应该弱于俯仰与横滚方向，这是正常现象。如果飞行器出现抖动，减小MC_YAWRATE_P。如果响应非常剧烈甚至在小幅转动，减小P。典型值大概为0.2–0.3。（四轴因为其结构，导致航向上的不灵敏，yaw-p要小于pitch与roll）。
-    &gt;      在航向的速率控制中，如果响应非常强烈或出现震荡，会影响俯仰和横滚方向的响应。统筹调节pitch，roll，yaw达到平衡。
-
-    Step 4.**稳定航向角**
-
-    &gt;        中油门上下，到刚好平衡重力。转动飞行器方向轴，观察反应。飞行器应该缓慢的回到初始方向。如果飞行器出现抖动，减小P。当响应正确但速度慢，增加P直到反应达到稳定，但不要出现震荡。典型值大概为2–3。 
-    &gt;
-    &gt;        前馈补偿调节	参数：MC_YAW_FF 
-    &gt;
-    &gt;        这个参数不太重要，并且可以在飞行过程中调节。但是不理想的参数会使响应变慢或过快。应该调节MC_YAW_FF使飞行器得到良好的响应过程。其有效范围0–1，典型值大概为0.8–0.9。（有时为了航拍效果考虑，可以再改小MC_YAW_FF，以便得到平滑的响应过程）。
-    &gt;
-    &gt;        在QGoundControl观察ATTITUDE.yaw。超调不应该超过2%–5%.小于pitch与 Roll。
-</code></pre>
+<p>pixhawk采用串级PID的方式，外环是控制角度，内环是控制角速度。因为内环更直接作用于电机，所以我们调试pixhawk的PID时，<strong>一般只用调试内环的PID即可(角速度)</strong>。<br>
+<strong>注意！！！</strong>  一切PID参数的调试都是基于电调行程校准通过，桨和电机、电调匹配的基础之上。如果飞机飞起来就侧翻（没校准好传感器和电调），或者已解锁就起飞（桨和电机不匹配），<strong>出现这类飞机都飞不起来的问题，调试PID参数是没有意义的，切记！ 调试PID参数是基于飞机飞行的有点不稳，但是基本可以飞行的基础之上！</strong></p>
+<blockquote>
+<p><strong>6.1.1</strong> 试飞行之后将飞控与计算机连接。</p>
+<p><strong>6.1.2</strong> 打开<strong>QGroundControl</strong>,点击上方文档图标。</p>
+<p><strong>6.1.3</strong> 打开 <em><strong>Analyze</strong></em> 下的<code>Download</code>选项，点击右侧的<code>Refresh</code>选项。</p>
+<p><strong>6.1.4</strong> 选择需要的飞行日志并点击右侧<code>Download</code>选项并完成下载。</p>
+<p><strong>6.1.5</strong> 打开<a class="link" href="https://logs.px4.io/">Flight Review<i class="fas fa-external-link-alt"></i></a>页面，点击<code>Choose File...</code>，选择对应文件，然后<code>Upload</code>。</p>
+<p><strong>6.1.6</strong> 点击弹出页的<code>Open Analysis</code>。</p>
+<p><strong>6.1.7</strong> 根据图表调整参数，具体方式如下。</p>
+</blockquote>
+<p><strong>参数名称对照</strong></p>
+<p>1.<strong>俯仰</strong>的内环角速度PID参数。</p>
+<blockquote>
+<p><code>MC_PITCHRATE_P</code>	<code>MC_PITCHRATE_I</code>	<code>MC_PITCHRATE_D</code></p>
+</blockquote>
+<p>2.<strong>滚转</strong>的内环角速度PID参数。</p>
+<blockquote>
+<p><code>MC_ROLLRATE_P</code>	<code>MC_ROLLRATE_I</code>	<code>MC_ROLLRATE_D</code></p>
+</blockquote>
+<p>3.<strong>偏航</strong>的内环角速度PID参数。</p>
+<blockquote>
+<p><code>MC_YAWRATE_P</code>	<code>MC_YAWRATE_I</code>	<code>MC_YAWRATE_D</code></p>
+</blockquote>
+<p><strong>参数调整</strong></p>
+<p><em><strong>!!如果飞行器结构对称，那么ROLL与PITCH的概念应该等价，如果不对称，则应该分开讨论。 !!</strong></em></p>
+<p>Step 1. <strong>稳定俯仰和翻滚速率</strong></p>
+<blockquote>
+<p>(1)P增益调节	参数：MC_ROLLRATE_P, MC_PITCHRATE_P<br>
+中油门上下，到刚好平衡重力。向俯仰或翻滚方向上稍做倾斜，观察反应。飞行器应该温和的抵抗倾斜过程，但保持倾斜角之后不会尝试恢复水平姿态。如果出现震荡，降低P。如果反应正确但非常慢，调大P直到开始出现抖动。重新调回P到稍稍有一点抖动甚至不再抖动（大概回调百分之十），到稍稍超调，典型值一般为0.1。</p>
+<p>(2)D增益调节	参数：MC_ROLLRATE_D, MC_PITCHRATE_D<br>
+如果参数处于某一值时，飞行器稍微抖动并且P值已经适量的减少。从0.01开始缓慢增加RATE_D直到消除最后一点震荡。如果此时飞行器又一次出现抖动，那就是D值过大。一般通过调节P与D就可以得到比较良好的电机响应。RATE_D的典型值一般在0.01–0.02 。</p>
+<p>(3)I增益调节	参数：MC_ROLLRATE_I, MC_PITCHRATE_I<br>
+如果飞行器可以实现定点但是定点的位置与期望存在误差，那么增加MC_ROLLRATE_I 和MC_PITCHRATE_I以增益MC_ROLLRATE_P的值得百分之五到百分之十开始向上增加。</p>
+</blockquote>
+<p>Step 2. <strong>稳定翻滚与俯仰角度</strong></p>
+<blockquote>
+<p>P增益调节	参数 MC_ROLL_P, MC_PITCH_P<br>
+中油门上下，到刚好平衡重力。向俯仰或翻滚方向上稍做倾斜，观察反应。飞行器应该缓慢回到水平。如果出现抖动，减小P。如果反应正确但非常慢，调大P直到开始出现抖动。最佳的反应应该是超调10%–20%后得到良好的响应。<br>
+在QGoundControl可以锁定pitch与roll。姿态角度超调不要超过10%–20%。</p>
+</blockquote>
+<p>Step 3. <strong>稳定航向速率</strong></p>
+<blockquote>
+<p>P增益调节	参数：MC_YAWRATE_P<br>
+中油门上下，到刚好平衡重力。转动飞行器方向轴，观察反应。电机声音应该发生改变，飞行器应该阻碍方向变化。但是这个响应应该弱于俯仰与横滚方向，这是正常现象。如果飞行器出现抖动，减小MC_YAWRATE_P。如果响应非常剧烈甚至在小幅转动，减小P。典型值大概为0.2–0.3。（四轴因为其结构，导致航向上的不灵敏，yaw-p要小于pitch与roll）。<br>
+在航向的速率控制中，如果响应非常强烈或出现震荡，会影响俯仰和横滚方向的响应。统筹调节pitch，roll，yaw达到平衡。</p>
+</blockquote>
+<p>Step 4.<strong>稳定航向角</strong></p>
+<blockquote>
+<p>中油门上下，到刚好平衡重力。转动飞行器方向轴，观察反应。飞行器应该缓慢的回到初始方向。如果飞行器出现抖动，减小P。当响应正确但速度慢，增加P直到反应达到稳定，但不要出现震荡。典型值大概为2–3。<br>
+前馈补偿调节	参数：MC_YAW_FF<br>
+这个参数不太重要，并且可以在飞行过程中调节。但是不理想的参数会使响应变慢或过快。应该调节MC_YAW_FF使飞行器得到良好的响应过程。其有效范围0–1，典型值大概为0.8–0.9。（有时为了航拍效果考虑，可以再改小MC_YAW_FF，以便得到平滑的响应过程）。<br>
+在QGoundControl观察ATTITUDE.yaw。超调不应该超过2%–5%.小于pitch与 Roll。</p>
+</blockquote>
 </blockquote>
 <p><strong>（以下根据需要进行修改）</strong></p>
 <p><strong>6.2磁罗盘<em>Compass</em>参数调试</strong></p>
@@ -341,8 +316,8 @@
 </blockquote>
 <p><strong>6.3<em>EKF2</em>参数调试</strong></p>
 <blockquote>
-<p><em><strong>EKF2_AID_MASK</strong></em> 仅勾选<code>vision position fusion</code>与<code>vision yaw fusion</code>。</p>
-<p><em><strong>EKF2_HGT_MODE</strong></em> 仅勾选<code>Range sensor</code>并<code>Save</code>。</p>
+<p><em><strong>EKF2_AID_MASK</strong></em> 仅勾选<code>vision position fusion</code>与<code>vision yaw fusion</code>。<br>
+<em><strong>EKF2_HGT_MODE</strong></em> 仅勾选<code>Range sensor</code>并<code>Save</code>。</p>
 </blockquote>
 <p><strong>6.4TFMini参数调试</strong></p>
 <blockquote>
